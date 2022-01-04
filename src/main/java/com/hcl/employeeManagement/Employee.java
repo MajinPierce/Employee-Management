@@ -3,7 +3,6 @@ import java.time.*;
 
 public class Employee {
 
-		private static int empIDGen = 0;
 		private int empID;
 		private String empName;
 		private LocalDate dob;
@@ -11,12 +10,27 @@ public class Employee {
 		private float salary;
 		
 		public Employee(String empName, String dob, float salary){
-			empIDGen++;
-			this.empID = empIDGen;
+			this.empID = (Integer) null;
 			this.empName = empName;
 			this.dob = LocalDate.parse(dob);
 			this.age = Period.between(this.dob, LocalDate.now()).getYears();
 			this.salary = salary;
+		}
+		
+		public Employee(int empID, String empName, String dob, float salary){
+			this.empID = empID;
+			this.empName = empName;
+			this.dob = LocalDate.parse(dob);
+			this.age = Period.between(this.dob, LocalDate.now()).getYears();
+			this.salary = salary;
+		}
+
+		public int getEmpID() {
+			return empID;
+		}
+
+		public void setEmpID(int empID) {
+			this.empID = empID;
 		}
 
 		public int getAge() {
@@ -39,8 +53,12 @@ public class Employee {
 			this.salary = salary;
 		}
 
-		public int getEmpID() {
-			return this.empID;
+		public void setEmpName(String empName) {
+			this.empName = empName;
+		}
+
+		public void setDob(LocalDate dob) {
+			this.dob = dob;
 		}
 
 		public String getEmpName() {
@@ -53,11 +71,11 @@ public class Employee {
 
 		@Override
 		public String toString() {
-			return "Employee [empID=" + this.empID + 
+			return "Employee [ empID=" + this.empID +
 					", empName=" + this.empName + 
 					", dob=" + this.dob + 
 					", age=" + this.getAge() + 
-					", salary="	+ this.salary + "]";
+					", salary="	+ this.salary + " ]";
 		}		
 		
 }
