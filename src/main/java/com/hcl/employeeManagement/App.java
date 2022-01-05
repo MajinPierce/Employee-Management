@@ -2,6 +2,8 @@ package com.hcl.employeeManagement;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -11,10 +13,16 @@ import org.apache.logging.log4j.Logger;
  */
 public class App 
 {
-	static Logger log = LogManager.getLogger();
+	static Logger log = LogManager.getLogger(App.class.getName());
     public static void main( String[] args )
     {
-    	log.error("Begin program execution");
+    	log.debug("Begin program execution");
+    	log.trace("Trace Message!");
+        log.debug("Debug Message!");
+        log.info("Info Message!");
+        log.warn("Warn Message!");
+        log.error("Error Message!");
+        log.fatal("Fatal Message!");
 		/*
 		 * Employee e1 = new Employee("Pierce", "1996-05-07", 58000.00f); 
 		 * Employee e2 = new Employee("Dan", "2001-09-11", 20000.00f);
@@ -27,8 +35,8 @@ public class App
     	//ManageEmployeeTable.insertEmployee(e3);
 		
     	//selectAll
-    	//ArrayList<Employee> list = ManageEmployeeTable.selectAllEmployees();
-    	//list.forEach( (emp) -> { System.out.println(emp); } );
+    	ArrayList<Employee> list = ManageEmployeeTable.selectAllEmployees();
+    	list.forEach( (emp) -> { System.out.println(emp); } );
     	
     	//select by employeeID
     	//ArrayList<Employee> list2 = ManageEmployeeTable.selectEmployeeID(3);
@@ -46,5 +54,6 @@ public class App
     	
     	//delete by ID
     	//ManageEmployeeTable.deleteEmployee(4);
+    	log.debug("End program execution");
     }
 }

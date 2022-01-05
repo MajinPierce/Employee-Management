@@ -39,6 +39,7 @@ public class ManageEmployeeTable {
 	        } catch (SQLException e) {
 	        	JDBCUtils.printSQLException(e);
 	        }
+		App.log.debug("All Employees Selected");
 		return list;
 	}
 	
