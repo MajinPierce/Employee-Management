@@ -2,6 +2,8 @@ package com.hcl.employeeManagement;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Hello world!
@@ -9,8 +11,10 @@ import java.util.ArrayList;
  */
 public class App 
 {
+	static Logger log = LogManager.getLogger();
     public static void main( String[] args )
     {
+    	log.error("Begin program execution");
 		/*
 		 * Employee e1 = new Employee("Pierce", "1996-05-07", 58000.00f); 
 		 * Employee e2 = new Employee("Dan", "2001-09-11", 20000.00f);

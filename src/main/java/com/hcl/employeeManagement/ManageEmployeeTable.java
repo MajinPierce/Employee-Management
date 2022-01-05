@@ -133,7 +133,7 @@ public class ManageEmployeeTable {
 			return 0;
 	}
 	
-	public static ArrayList<Employee> filterBySalary(float salary){
+	public static ArrayList<Employee> filterAllBySalary(float salary){
 		ArrayList<Employee> list = selectAllEmployees();
 		ArrayList<Employee> filteredList = list.stream()
 				.filter(emp -> emp.getSalary() >= salary)
@@ -141,7 +141,7 @@ public class ManageEmployeeTable {
 		return filteredList;
 	}
 	
-	public static ArrayList<Employee> filterBySalary(ArrayList<Employee> list, float salary){
+	public static ArrayList<Employee> filterListBySalary(ArrayList<Employee> list, float salary){
 		ArrayList<Employee> filteredList = list.stream()
 				.filter(emp -> emp.getSalary() >= salary)
 				.collect(Collectors.toCollection(ArrayList::new));
