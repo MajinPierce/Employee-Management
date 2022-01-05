@@ -13,20 +13,25 @@ import java.util.ArrayList;
 
 public class ManageEmployeeTable {
 	
-	private static String selectAll = "SELECT * FROM employees;";
-	private static String insertEmployee = "INSERT INTO employees (EmpName, DOB, age, salary) VALUES (?, ?, ?, ?)";
+	private static final String selectAllSQL = "SELECT * FROM employees;";
+	private static final String insertEmployeeSQL = "INSERT INTO employees (EmpName, DOB, age, salary) VALUES (?, ?, ?, ?)";
+	private static final String selectIDSQL = "SELECT * FROM employees WHERE EmpID = ?";
+	private static final String selectNameSQL = "SELECT * FROM employees WHERE EmpName = ?";
+	private static final String updateEmployeeNameSQL = "update employees set EmpName = ? where EmpID = ?;";
+	private static final String updateEmployeeSalarySQL = "update employees set salary = ? where EmpID = ?;";
+	private static final String deleteEmployeeSQL = "DELETE FROM employees WHERE EmpID = ?";
 	
 	public static ArrayList<Employee> selectAllEmployees(){
 		ArrayList<Employee> list = new ArrayList<>();
 		try (Connection connection = JDBCUtils.getConnection();
 			Statement statement = connection.createStatement(); 
-			ResultSet rs = statement.executeQuery(selectAll); ) {
+			ResultSet rs = statement.executeQuery(selectAllSQL); ) {
 				while(rs.next()) {
-					int empID = rs.getInt("EmpID");
-					String empName = rs.getString("EmpName");
+					int id = rs.getInt("EmpID");
+					String name = rs.getString("EmpName");
 					String dob = rs.getDate("dob").toString();
 					float salary = rs.getFloat("salary");
-					list.add(new Employee(empID, empName, dob, salary));
+					list.add(new Employee(id, name, dob, salary));
 				}
 				
 	        } catch (SQLException e) {
@@ -37,13 +42,12 @@ public class ManageEmployeeTable {
 	
 	public static int insertEmployee(Employee emp){
 		try(Connection connection = JDBCUtils.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(insertEmployee); ){
+			PreparedStatement preparedStatement = connection.prepareStatement(insertEmployeeSQL); ){
 				preparedStatement.setString(1, emp.getEmpName());
 				preparedStatement.setDate(2, Date.valueOf(emp.getDob()));
 				preparedStatement.setInt(3, emp.getAge());
 				preparedStatement.setDouble(4, emp.getSalary());
-				int row = preparedStatement.executeUpdate();
-	            System.out.println(row); //1
+				preparedStatement.executeUpdate();
 		} catch(SQLException e) {
 			JDBCUtils.printSQLException(e);
 			return -1;
@@ -51,19 +55,83 @@ public class ManageEmployeeTable {
 		return 0;
 	}
 	
-	public String selectEmployee(){
-		return "0";
+	public static ArrayList<Employee> selectEmployeeID(int empID){
+		ArrayList<Employee> list = new ArrayList<>();
+		try (Connection connection = JDBCUtils.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(selectIDSQL); ){
+				preparedStatement.setInt(1, empID);
+				ResultSet rs = preparedStatement.executeQuery();
+				while(rs.next()) {
+					int id = rs.getInt("EmpID");
+					String empName = rs.getString("EmpName");
+					String dob = rs.getDate("dob").toString();
+					float salary = rs.getFloat("salary");
+					list.add(new Employee(id, empName, dob, salary));
+				}
+		} catch(SQLException e) {
+			JDBCUtils.printSQLException(e);
+		}
+		return list;
 	}
 	
-	public int updateEmployee(){
+	public static ArrayList<Employee> selectEmployeeName(String empName){
+		ArrayList<Employee> list = new ArrayList<>();
+		try (Connection connection = JDBCUtils.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(selectNameSQL); ){
+				preparedStatement.setString(1, empName);
+				ResultSet rs = preparedStatement.executeQuery();
+				while(rs.next()) {
+					int id = rs.getInt("EmpID");
+					String name = rs.getString("EmpName");
+					String dob = rs.getDate("dob").toString();
+					float salary = rs.getFloat("salary");
+					list.add(new Employee(id, name, dob, salary));
+				}
+		} catch(SQLException e) {
+			JDBCUtils.printSQLException(e);
+		}
+		return list;
+	}
+	
+	public static int updateEmployeeName(int empID, String newName){
+		try (Connection connection = JDBCUtils.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(updateEmployeeNameSQL); ){
+				preparedStatement.setString(1, newName);
+				preparedStatement.setInt(2, empID);
+				preparedStatement.executeUpdate();
+		} catch(SQLException e) {
+			JDBCUtils.printSQLException(e);
+			return -1;
+		}
 		return 0;
+	}
+	
+	public static int updateEmployeeSalary(int empID, float newSalary){
+		try (Connection connection = JDBCUtils.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(updateEmployeeSalarySQL); ){
+					preparedStatement.setFloat(1, newSalary);
+					preparedStatement.setInt(2, empID);
+					preparedStatement.executeUpdate();
+			} catch(SQLException e) {
+				JDBCUtils.printSQLException(e);
+				return -1;
+			}
+			return 0;
 	}
 
-	public int deleteEmployee(){
-		return 0;
+	public static int deleteEmployee(int empID){
+		try (Connection connection = JDBCUtils.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(deleteEmployeeSQL); ){
+				preparedStatement.setInt(1, empID);
+				preparedStatement.executeUpdate();
+			} catch(SQLException e) {
+				JDBCUtils.printSQLException(e);
+				return -1;
+			}
+			return 0;
 	}
 	
-	public int filterBySalary(){
+	public static int filterBySalary(){
 		return 0;
 	}
 }

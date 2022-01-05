@@ -10,7 +10,7 @@ public class Employee {
 		private float salary;
 		
 		public Employee(String empName, String dob, float salary){
-			this.empID = (Integer) null;
+			this.empID = -1;
 			this.empName = empName;
 			this.dob = LocalDate.parse(dob);
 			this.age = Period.between(this.dob, LocalDate.now()).getYears();
