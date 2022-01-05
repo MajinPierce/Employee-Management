@@ -10,6 +10,8 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ManageEmployeeTable {
 	
@@ -131,7 +133,18 @@ public class ManageEmployeeTable {
 			return 0;
 	}
 	
-	public static int filterBySalary(){
-		return 0;
+	public static ArrayList<Employee> filterBySalary(float salary){
+		ArrayList<Employee> list = selectAllEmployees();
+		ArrayList<Employee> filteredList = list.stream()
+				.filter(emp -> emp.getSalary() >= salary)
+				.collect(Collectors.toCollection(ArrayList::new));
+		return filteredList;
+	}
+	
+	public static ArrayList<Employee> filterBySalary(ArrayList<Employee> list, float salary){
+		ArrayList<Employee> filteredList = list.stream()
+				.filter(emp -> emp.getSalary() >= salary)
+				.collect(Collectors.toCollection(ArrayList::new));
+		return filteredList;
 	}
 }
