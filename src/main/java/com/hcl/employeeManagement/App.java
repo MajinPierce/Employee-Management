@@ -1,9 +1,6 @@
 package com.hcl.employeeManagement;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,16 +10,11 @@ import org.apache.logging.log4j.Logger;
  */
 public class App 
 {
-	static Logger log = LogManager.getLogger(App.class.getName());
+	static Logger log = LogManager.getLogger(App.class);
     public static void main( String[] args )
     {
     	log.debug("Begin program execution");
-    	log.trace("Trace Message!");
-        log.debug("Debug Message!");
-        log.info("Info Message!");
-        log.warn("Warn Message!");
-        log.error("Error Message!");
-        log.fatal("Fatal Message!");
+
 		/*
 		 * Employee e1 = new Employee("Pierce", "1996-05-07", 58000.00f); 
 		 * Employee e2 = new Employee("Dan", "2001-09-11", 20000.00f);
