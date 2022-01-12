@@ -1,6 +1,7 @@
 package com.hcl.employeeManagement;
 import java.time.*;
 
+// want to change this to be serializable to remove any potential data loss
 public class Employee {
 
 		private int empID;
@@ -9,6 +10,7 @@ public class Employee {
 		private int age;
 		private float salary;
 		
+		//initialize an emp that hasn't been given an ID in the database
 		public Employee(String empName, String dob, float salary){
 			this.empID = -1;
 			this.empName = empName;
@@ -17,6 +19,7 @@ public class Employee {
 			this.salary = salary;
 		}
 		
+		//initialize an emp that has been created in the database
 		public Employee(int empID, String empName, String dob, float salary){
 			this.empID = empID;
 			this.empName = empName;
@@ -33,6 +36,7 @@ public class Employee {
 			this.empID = empID;
 		}
 
+		//calculate and return age based on DOB
 		public int getAge() {
 			int tempAge = Period.between(this.dob, LocalDate.now()).getYears();
 			if(this.age < tempAge) {

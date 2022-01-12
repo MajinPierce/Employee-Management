@@ -38,12 +38,13 @@ public class ManageEmployeeTable {
 				
 	        } catch (SQLException e) {
 	        	JDBCUtils.printSQLException(e);
+	        	App.log.debug("Problem selecting employees");
 	        }
 		App.log.debug("All Employees Selected");
 		return list;
 	}
 	
-	public static int insertEmployee(Employee emp){
+	public static void insertEmployee(Employee emp){
 		try(Connection connection = JDBCUtils.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(insertEmployeeSQL); ){
 				preparedStatement.setString(1, emp.getEmpName());
@@ -53,9 +54,9 @@ public class ManageEmployeeTable {
 				preparedStatement.executeUpdate();
 		} catch(SQLException e) {
 			JDBCUtils.printSQLException(e);
-			return -1;
+			App.log.debug("Problem inserting new employee");
 		}
-		return 0;
+		App.log.debug("Employees Successfully Inserted");
 	}
 	
 	public static ArrayList<Employee> selectEmployeeID(int empID){
@@ -73,7 +74,9 @@ public class ManageEmployeeTable {
 				}
 		} catch(SQLException e) {
 			JDBCUtils.printSQLException(e);
+			App.log.debug("Problem selecting employee with id " + empID);
 		}
+		App.log.debug("Employee selected by id " + empID);
 		return list;
 	}
 	
@@ -92,11 +95,13 @@ public class ManageEmployeeTable {
 				}
 		} catch(SQLException e) {
 			JDBCUtils.printSQLException(e);
+			App.log.debug("Problem selecting employees with name " + empName);
 		}
+		App.log.debug("Employees selected with name " + empName);
 		return list;
 	}
 	
-	public static int updateEmployeeName(int empID, String newName){
+	public static void updateEmployeeName(int empID, String newName){
 		try (Connection connection = JDBCUtils.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(updateEmployeeNameSQL); ){
 				preparedStatement.setString(1, newName);
@@ -104,12 +109,12 @@ public class ManageEmployeeTable {
 				preparedStatement.executeUpdate();
 		} catch(SQLException e) {
 			JDBCUtils.printSQLException(e);
-			return -1;
+			App.log.debug("Problem updating employee " + empID + " name to " + newName);
 		}
-		return 0;
+		App.log.debug("Successfully updated employee " + empID + " name to " + newName);
 	}
 	
-	public static int updateEmployeeSalary(int empID, float newSalary){
+	public static void updateEmployeeSalary(int empID, float newSalary){
 		try (Connection connection = JDBCUtils.getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(updateEmployeeSalarySQL); ){
 					preparedStatement.setFloat(1, newSalary);
@@ -117,21 +122,21 @@ public class ManageEmployeeTable {
 					preparedStatement.executeUpdate();
 			} catch(SQLException e) {
 				JDBCUtils.printSQLException(e);
-				return -1;
+				App.log.debug("Problem updating employee " + empID + " salary to " + newSalary);
 			}
-			return 0;
+		App.log.debug("Successfully updated employee " + empID + " salary to " + newSalary);
 	}
 
-	public static int deleteEmployee(int empID){
+	public static void deleteEmployee(int empID){
 		try (Connection connection = JDBCUtils.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(deleteEmployeeSQL); ){
 				preparedStatement.setInt(1, empID);
 				preparedStatement.executeUpdate();
 			} catch(SQLException e) {
 				JDBCUtils.printSQLException(e);
-				return -1;
+				App.log.debug("Problem deleting employee with id " + empID);
 			}
-			return 0;
+		App.log.debug("Employee deleted by id " + empID);
 	}
 	
 	public static ArrayList<Employee> filterAllBySalary(float salary){
@@ -142,9 +147,26 @@ public class ManageEmployeeTable {
 		return filteredList;
 	}
 	
+	// to add iterative filtering later
 	public static ArrayList<Employee> filterListBySalary(ArrayList<Employee> list, float salary){
 		ArrayList<Employee> filteredList = list.stream()
 				.filter(emp -> emp.getSalary() >= salary)
+				.collect(Collectors.toCollection(ArrayList::new));
+		return filteredList;
+	}
+	
+	public static ArrayList<Employee> filterAllByAge(int age){
+		ArrayList<Employee> list = selectAllEmployees();
+		ArrayList<Employee> filteredList = list.stream()
+				.filter(emp -> emp.getAge() >= age)
+				.collect(Collectors.toCollection(ArrayList::new));
+		return filteredList;
+	}
+	
+	//to add iterative filtering later
+	public static ArrayList<Employee> filterListByAge(ArrayList<Employee> list, int age){
+		ArrayList<Employee> filteredList = list.stream()
+				.filter(emp -> emp.getAge() >= age)
 				.collect(Collectors.toCollection(ArrayList::new));
 		return filteredList;
 	}
