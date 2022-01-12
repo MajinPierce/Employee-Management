@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 public class ManageEmployeeTable {
 	
+	//MySQL statements for the corresponding methods
 	private static final String selectAllSQL = "SELECT * FROM employees;";
 	private static final String insertEmployeeSQL = "INSERT INTO employees (EmpName, DOB, age, salary) VALUES (?, ?, ?, ?)";
 	private static final String selectIDSQL = "SELECT * FROM employees WHERE EmpID = ?";
@@ -23,6 +24,7 @@ public class ManageEmployeeTable {
 	private static final String updateEmployeeSalarySQL = "update employees set salary = ? where EmpID = ?;";
 	private static final String deleteEmployeeSQL = "DELETE FROM employees WHERE EmpID = ?";
 	
+	//selects and returns a list of all employees in the database
 	public static ArrayList<Employee> selectAllEmployees(){
 		ArrayList<Employee> list = new ArrayList<>();
 		try (Connection connection = JDBCUtils.getConnection();
@@ -44,6 +46,7 @@ public class ManageEmployeeTable {
 		return list;
 	}
 	
+	//insert a new employee into the database
 	public static void insertEmployee(Employee emp){
 		try(Connection connection = JDBCUtils.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(insertEmployeeSQL); ){
@@ -59,6 +62,7 @@ public class ManageEmployeeTable {
 		App.log.debug("Employees Successfully Inserted");
 	}
 	
+	//select and return a list of the employee that matches the empID argument
 	public static ArrayList<Employee> selectEmployeeID(int empID){
 		ArrayList<Employee> list = new ArrayList<>();
 		try (Connection connection = JDBCUtils.getConnection();
@@ -80,6 +84,7 @@ public class ManageEmployeeTable {
 		return list;
 	}
 	
+	//select and return a list of all employees that match the empName argument
 	public static ArrayList<Employee> selectEmployeeName(String empName){
 		ArrayList<Employee> list = new ArrayList<>();
 		try (Connection connection = JDBCUtils.getConnection();
@@ -101,6 +106,7 @@ public class ManageEmployeeTable {
 		return list;
 	}
 	
+	//updates the name of the employee specified by the provided employee ID
 	public static void updateEmployeeName(int empID, String newName){
 		try (Connection connection = JDBCUtils.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(updateEmployeeNameSQL); ){
@@ -114,6 +120,7 @@ public class ManageEmployeeTable {
 		App.log.debug("Successfully updated employee " + empID + " name to " + newName);
 	}
 	
+	//updates the salary of the employee specified by the provided employee ID
 	public static void updateEmployeeSalary(int empID, float newSalary){
 		try (Connection connection = JDBCUtils.getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(updateEmployeeSalarySQL); ){
@@ -127,6 +134,7 @@ public class ManageEmployeeTable {
 		App.log.debug("Successfully updated employee " + empID + " salary to " + newSalary);
 	}
 
+	//deletes the employee that matches the provided employee ID
 	public static void deleteEmployee(int empID){
 		try (Connection connection = JDBCUtils.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(deleteEmployeeSQL); ){
@@ -139,6 +147,7 @@ public class ManageEmployeeTable {
 		App.log.debug("Employee deleted by id " + empID);
 	}
 	
+	//selects all employees and returns a list filtered by a specified salary
 	public static ArrayList<Employee> filterAllBySalary(float salary){
 		ArrayList<Employee> list = selectAllEmployees();
 		ArrayList<Employee> filteredList = list.stream()
@@ -155,6 +164,7 @@ public class ManageEmployeeTable {
 		return filteredList;
 	}
 	
+	//selects all employees and returns a list filtered by a specified age
 	public static ArrayList<Employee> filterAllByAge(int age){
 		ArrayList<Employee> list = selectAllEmployees();
 		ArrayList<Employee> filteredList = list.stream()

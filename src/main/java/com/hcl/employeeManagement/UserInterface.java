@@ -10,6 +10,8 @@ public class UserInterface {
 			showMainMenu();
 		}
 		
+		//main menu where all other sub menus originate
+		//each option leads to another menu where additional actions can be taken
 		static void showMainMenu() {
 			int option = 0;
 			
@@ -47,6 +49,7 @@ public class UserInterface {
 			sc.close();
 		}
 		
+		//allows user to select all employees or specifically by ID, name, salary, age
 		static void showSelectMenu() {
 			int option = 0;
 			
@@ -63,17 +66,21 @@ public class UserInterface {
 				
 				switch (option) {
 			        case 1:
+			        	//retrieves and prints all employees in the database
 			        	ManageEmployeeTable.selectAllEmployees()
 			        		.forEach( (emp) -> { System.out.println(emp); } );
 			        	System.out.println();
 			            break;
 			        case 2:
+			        	//retrieves and prints employee with specific ID
+			        	//*want to print message if no one was found*
 			        	System.out.print("Please enter employee ID: ");
 			        	ManageEmployeeTable.selectEmployeeID(sc.nextInt())
 			        		.forEach( (emp) -> { System.out.println(emp); } );
 			        	System.out.println();
 			            break;
 			        case 3:
+			        	//retrieves and prints all employees that have a specific name
 			        	System.out.print("Please enter employee name: ");
 			        	ManageEmployeeTable.selectEmployeeName(sc.next())
 			        		.forEach( (emp) -> { System.out.println(emp); } );
@@ -81,6 +88,7 @@ public class UserInterface {
 			        	sc.nextLine();
 			            break;
 			        case 4:
+			        	// additional sub menu to filter employees above a certain salary or age
 			        	showFilterMenu();
 			        	option = 5;
 			        	break;
@@ -93,6 +101,7 @@ public class UserInterface {
 			}
 		}
 		
+		//allows user to filter through all employees based on a salary or age
 		static void showFilterMenu(){
 			int option = 0;
 			
@@ -128,11 +137,14 @@ public class UserInterface {
 			}
 		}
 		
+		//prompts user for name, dob, salary to insert a new employee
 		static void showInsertMenu() {
 			System.out.println("INSERT\n");
 			System.out.println("Please enter employee information or 'quit' to quit:");
 			System.out.println("Name: ");
 			String name = sc.next();
+			//exits insertion process and goes back to main menu if
+			//the user entered 'quit', otherwise continues
 			if(name.equals("quit")) {
 				System.out.println();
 			} else {
@@ -195,6 +207,7 @@ public class UserInterface {
 			}
 		}
 		
+		//deletes a user based on the provided employee ID
 		static void showDeleteMenu() {
 			System.out.println("DELETE\n");
 			System.out.println("Please enter employee ID to delete.");
