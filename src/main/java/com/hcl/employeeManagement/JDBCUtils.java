@@ -8,7 +8,7 @@ public class JDBCUtils {
 
 	private static String jdbcURL = "jdbc:mysql://localhost:3306/test?useSSL=false";
 	private static String jdbcUsername = "root";
-	private static String jdbcPassword = "hYCGg@a9B#@cd6L$";
+	private static String jdbcPassword = "d!aPxMQh4M5B";
 
 	public static Connection getConnection() {
 		Connection connection = null;
