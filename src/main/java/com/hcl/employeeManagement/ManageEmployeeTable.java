@@ -24,20 +24,25 @@ public class ManageEmployeeTable {
 	private static final String updateEmployeeSalarySQL = "update employees set salary = ? where EmpID = ?;";
 	private static final String deleteEmployeeSQL = "DELETE FROM employees WHERE EmpID = ?";
 	
+	public static ArrayList<Employee> assembleEmployeeList(ResultSet rs) throws SQLException{
+		ArrayList<Employee> list = new ArrayList<>();
+		while(rs.next()) {
+			int id = rs.getInt("EmpID");
+			String name = rs.getString("EmpName");
+			String dob = rs.getDate("dob").toString();
+			float salary = rs.getFloat("salary");
+			list.add(new Employee(id, name, dob, salary));
+		}
+		return list;
+	}
+	
 	//selects and returns a list of all employees in the database
 	public static ArrayList<Employee> selectAllEmployees(){
 		ArrayList<Employee> list = new ArrayList<>();
 		try (Connection connection = JDBCUtils.getConnection();
 			Statement statement = connection.createStatement(); 
 			ResultSet rs = statement.executeQuery(selectAllSQL); ) {
-				while(rs.next()) {
-					int id = rs.getInt("EmpID");
-					String name = rs.getString("EmpName");
-					String dob = rs.getDate("dob").toString();
-					float salary = rs.getFloat("salary");
-					list.add(new Employee(id, name, dob, salary));
-				}
-				
+				list = assembleEmployeeList(rs);
 	        } catch (SQLException e) {
 	        	JDBCUtils.printSQLException(e);
 	        	App.log.debug("Problem selecting employees");
@@ -69,13 +74,7 @@ public class ManageEmployeeTable {
 			PreparedStatement preparedStatement = connection.prepareStatement(selectIDSQL); ){
 				preparedStatement.setInt(1, empID);
 				ResultSet rs = preparedStatement.executeQuery();
-				while(rs.next()) {
-					int id = rs.getInt("EmpID");
-					String empName = rs.getString("EmpName");
-					String dob = rs.getDate("dob").toString();
-					float salary = rs.getFloat("salary");
-					list.add(new Employee(id, empName, dob, salary));
-				}
+				list = assembleEmployeeList(rs);
 		} catch(SQLException e) {
 			JDBCUtils.printSQLException(e);
 			App.log.debug("Problem selecting employee with id " + empID);
@@ -91,13 +90,7 @@ public class ManageEmployeeTable {
 			PreparedStatement preparedStatement = connection.prepareStatement(selectNameSQL); ){
 				preparedStatement.setString(1, empName);
 				ResultSet rs = preparedStatement.executeQuery();
-				while(rs.next()) {
-					int id = rs.getInt("EmpID");
-					String name = rs.getString("EmpName");
-					String dob = rs.getDate("dob").toString();
-					float salary = rs.getFloat("salary");
-					list.add(new Employee(id, name, dob, salary));
-				}
+				list = assembleEmployeeList(rs);
 		} catch(SQLException e) {
 			JDBCUtils.printSQLException(e);
 			App.log.debug("Problem selecting employees with name " + empName);
